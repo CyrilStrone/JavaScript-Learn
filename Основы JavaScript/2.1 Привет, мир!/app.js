@@ -1,0 +1,1 @@
+alert('Я тоже JavaScript!');
