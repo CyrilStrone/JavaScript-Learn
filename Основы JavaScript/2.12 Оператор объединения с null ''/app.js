@@ -1,15 +1,45 @@
-alert("Hello");
+result = (a !== null && a !== undefined) ? a : b;
 
-let age = prompt('Сколько тебе лет?', 100);
+let user;
 
-alert(`Тебе ${age} лет!`)
+alert(user ?? "Аноним"); // Аноним
 
-result = confirm(question);
+let user2 = "Иван";
 
-let isBoss = confirm("Ты здесь главный?");
+alert(user2 ?? "Аноним"); // Иван
 
-alert(isBoss); // true, если нажата OK
+let firstName = null;
+let lastName = null;
+let nickName = "Суперкодер";
+
+// показывает первое определённое значение:
+alert(firstName ?? lastName ?? nickName ?? "Аноним"); // Суперкодер
 
 
-let name = prompt('Ваше имя?', 100);
-alert(name)
+// показывает первое истинное значение:
+alert(firstName || lastName || nickName || "Аноним"); // Суперкодер
+
+let height = 0;
+
+alert(height || 100); // 100
+alert(height ?? 100); // 0
+
+let height2 = null;
+let width = null;
+
+// важно: используйте круглые скобки
+let area = (height2 ?? 100) * (width ?? 50);
+
+alert(area); // 5000
+
+// без круглых скобок
+let area2 = height ?? 100 * width ?? 50;
+
+// ...то же самое, что предыдущее выражение (вероятно, это не то, что нам нужно):
+let area3 = height ?? (100 * width) ?? 50;
+
+let x = 1 && 2 ?? 3; // Синтаксическая ошибка
+
+let x2 = (1 && 2) ?? 3; // Работает без ошибок
+
+alert(x); // 2
