@@ -1,37 +1,113 @@
-describe("pow", function() {
-    describe("возводит x в степень 3", function() {
-    function makeTest(x) {
-      let expected = x * x * x;
-      it(`${x} в степени 3 будет ${expected}`, function() {
-        assert.equal(pow(x, 3), expected);
-      });
-    }
-  
-    for (let x = 1; x <= 5; x++) {
-      makeTest(x);
-    }
-    });
-    it("для отрицательных n возвращает NaN", function() {
-        assert.isNaN(pow(2, -1));
-      });
-    
-      it("для дробных n возвращает NaN", function() {
-        assert.isNaN(pow(2, 1.5));
-      });
-  });
+// вывод
+alert(obj);
 
-  function pow(x, n) {
-    if (n < 0) return NaN;
-    if (Math.round(n) != n) return NaN;
-    
-    let result = 1;
+// используем объект в качестве имени свойства
+anotherObj[obj] = 123;
 
-  
-    for (let i = 0; i < n; i++) {
-      result *= x;
-    }
-  
-    return result;
+/////////////////////////////////////////////////////////////////////
+
+// явное преобразование
+let num = Number(obj);
+
+// математическое (исключая бинарный оператор "+")
+let n = +obj; // унарный плюс
+let delta = date1 - date2;
+
+// сравнения больше/меньше
+let greater = user1 > user2;
+
+/////////////////////////////////////////////////////////////////////
+
+// бинарный плюс
+let total = car1 + car2;
+
+// obj == string/number/symbol
+if (user == 1) { ... };
+
+/////////////////////////////////////////////////////////////////////
+
+obj[Symbol.toPrimitive] = function(hint) {
+  // должен вернуть примитивное значение
+  // hint равно чему-то одному из: "string", "number" или "default"
+};
+
+/////////////////////////////////////////////////////////////////////
+
+let user = {
+  name: "John",
+  money: 1000,
+
+  [Symbol.toPrimitive](hint) {
+    alert(`hint: ${hint}`);
+    return hint == "string" ? `{name: "${this.name}"}` : this.money;
   }
+};
+
+// демонстрация результатов преобразований:
+alert(user); // hint: string -> {name: "John"}
+alert(+user); // hint: number -> 1000
+alert(user + 500); // hint: default -> 1500
+
+/////////////////////////////////////////////////////////////////////
+
+let user = {
+  name: "John",
+  money: 1000,
+
+  // для хинта равного "string"
+  toString() {
+    return `{name: "${this.name}"}`;
+  },
+
+  // для хинта равного "number" или "default"
+  valueOf() {
+    return this.money;
+  }
+
+};
+
+alert(user); // toString -> {name: "John"}
+alert(+user); // valueOf -> 1000
+alert(user + 500); // valueOf -> 1500
+
+/////////////////////////////////////////////////////////////////////
+
+let user = {
+  name: "John",
+
+  toString() {
+    return this.name;
+  }
+};
+
+alert(user); // toString -> John
+alert(user + 500); // toString -> John500
+
+/////////////////////////////////////////////////////////////////////
+
+let obj = {
+  // toString обрабатывает все преобразования в случае отсутствия других методов
+  toString() {
+    return "2";
+  }
+};
+
+alert(obj * 2); // 4, объект был преобразован к примитиву "2", затем умножение сделало его числом
+
+/////////////////////////////////////////////////////////////////////
+
+let obj = {
+  toString() {
+    return "2";
+  }
+};
+
+alert(obj + 2); // 22 (преобразование к примитиву вернуло строку => конкатенация)
+
+/////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////
