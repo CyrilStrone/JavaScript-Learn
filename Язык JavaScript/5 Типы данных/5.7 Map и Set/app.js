@@ -1,127 +1,158 @@
-// Создаём новый символ - id
-let id = Symbol();
+/////////////////////////////////////////////////////////////////////
+
+let map = new Map();
+
+map.set("1", "str1");    // строка в качестве ключа
+map.set(1, "num1");      // цифра как ключ
+map.set(true, "bool1");  // булево значение как ключ
+
+// помните, обычный объект Object приводит ключи к строкам?
+// Map сохраняет тип ключей, так что в этом случае сохранится 2 разных значения:
+alert(map.get(1)); // "num1"
+alert(map.get("1")); // "str1"
+
+alert(map.size); // 3
 
 /////////////////////////////////////////////////////////////////////
 
-// Создаём символ id с описанием (именем) "id"
-let id = Symbol("id");
+let john = { name: "John" };
+
+// давайте сохраним количество посещений для каждого пользователя
+let visitsCountMap = new Map();
+
+// объект john - это ключ для значения в объекте Map
+visitsCountMap.set(john, 123);
+
+alert(visitsCountMap.get(john)); // 123
 
 /////////////////////////////////////////////////////////////////////
 
-let id1 = Symbol("id");
-let id2 = Symbol("id");
+let john = { name: "John" };
 
-alert(id1 == id2); // false
+let visitsCountObj = {}; // попробуем использовать объект
 
-/////////////////////////////////////////////////////////////////////
+visitsCountObj[john] = 123; // возьмём объект john как ключ
 
-let id = Symbol("id");
-alert(id); // TypeError: Cannot convert a Symbol value to a string
-
-/////////////////////////////////////////////////////////////////////
-
-let id = Symbol("id");
-alert(id.toString()); // Symbol(id), теперь работает
+// Вот как это было записано!
+alert( visitsCountObj["[object Object]"] ); // 123
 
 /////////////////////////////////////////////////////////////////////
 
-let id = Symbol("id");
-alert(id.description); // id
+map.set("1", "str1")
+  .set(1, "num1")
+  .set(true, "bool1");
 
 /////////////////////////////////////////////////////////////////////
 
-let user = {
-  name: "Вася"
+let recipeMap = new Map([
+  ["огурец", 500],
+  ["помидор", 350],
+  ["лук",    50]
+]);
+
+// перебор по ключам (овощи)
+for (let vegetable of recipeMap.keys()) {
+  alert(vegetable); // огурец, помидор, лук
+}
+
+// перебор по значениям (числа)
+for (let amount of recipeMap.values()) {
+  alert(amount); // 500, 350, 50
+}
+
+// перебор по элементам в формате [ключ, значение]
+for (let entry of recipeMap) { // то же самое, что и recipeMap.entries()
+  alert(entry); // огурец,500 (и так далее)
+}
+
+/////////////////////////////////////////////////////////////////////
+
+// выполняем функцию для каждой пары (ключ, значение)
+recipeMap.forEach((value, key, map) => {
+  alert(`${key}: ${value}`); // огурец: 500 и так далее
+});
+
+/////////////////////////////////////////////////////////////////////
+
+// массив пар [ключ, значение]
+let map = new Map([
+  ['1',  'str1'],
+  [1,    'num1'],
+  [true, 'bool1']
+]);
+
+alert( map.get('1') ); // str1
+
+/////////////////////////////////////////////////////////////////////
+
+let obj = {
+  name: "John",
+  age: 30
 };
 
-let id = Symbol("id");
-
-user[id] = 1;
-
-alert( user[id] ); // мы можем получить доступ к данным по ключу-символу
+let map = new Map(Object.entries(obj));
 
 /////////////////////////////////////////////////////////////////////
 
-// ...
-let id = Symbol("id");
+let prices = Object.fromEntries([
+  ['banana', 1],
+  ['orange', 2],
+  ['meat', 4]
+]);
 
-user[id] = "Их идентификатор";
+// prices = { banana: 1, orange: 2, meat: 4 }
 
-/////////////////////////////////////////////////////////////////////
-
-let user = { name: "Вася" };
-
-// Объявляем в нашем скрипте свойство "id"
-user.id = "Наш идентификатор";
-
-// ...другой скрипт тоже хочет свой идентификатор...
-
-user.id = "Их идентификатор"
-// Ой! Свойство перезаписано сторонней библиотекой!
+alert(prices.orange); // 2
 
 /////////////////////////////////////////////////////////////////////
 
-let id = Symbol("id");
+let map = new Map();
+map.set('banana', 1);
+map.set('orange', 2);
+map.set('meat', 4);
 
-let user = {
-  name: "Вася",
-  [id]: 123 // просто "id: 123" не сработает
-};
+let obj = Object.fromEntries(map.entries()); // создаём обычный объект (*)
 
-/////////////////////////////////////////////////////////////////////
+// готово!
+// obj = { banana: 1, orange: 2, meat: 4 }
 
-let id = Symbol("id");
-let user = {
-  name: "Вася",
-  age: 30,
-  [id]: 123
-};
-
-for (let key in user) alert(key); // name, age (свойства с ключом-символом нет среди перечисленных)
-
-// хотя прямой доступ по символу работает
-alert( "Напрямую: " + user[id] );
+alert(obj.orange); // 2
 
 /////////////////////////////////////////////////////////////////////
 
-let id = Symbol("id");
-let user = {
-  [id]: 123
-};
-
-let clone = Object.assign({}, user);
-
-alert( clone[id] ); // 123
+let obj = Object.fromEntries(map); // убрать .entries()
 
 /////////////////////////////////////////////////////////////////////
 
-// читаем символ из глобального реестра и записываем его в переменную
-let id = Symbol.for("id"); // если символа не существует, он будет создан
+let set = new Set();
 
-// читаем его снова и записываем в другую переменную (возможно, из другого места кода)
-let idAgain = Symbol.for("id");
+let john = { name: "John" };
+let pete = { name: "Pete" };
+let mary = { name: "Mary" };
 
-// проверяем -- это один и тот же символ
-alert( id === idAgain ); // true
+// считаем гостей, некоторые приходят несколько раз
+set.add(john);
+set.add(pete);
+set.add(mary);
+set.add(john);
+set.add(mary);
+
+// set хранит только 3 уникальных значения
+alert(set.size); // 3
+
+for (let user of set) {
+  alert(user.name); // John (потом Pete и Mary)
+}
 
 /////////////////////////////////////////////////////////////////////
 
-// получаем символ по имени
-let sym = Symbol.for("name");
-let sym2 = Symbol.for("id");
+let set = new Set(["апельсин", "яблоко", "банан"]);
 
-// получаем имя по символу
-alert( Symbol.keyFor(sym) ); // name
-alert( Symbol.keyFor(sym2) ); // id
+for (let value of set) alert(value);
 
-/////////////////////////////////////////////////////////////////////
-
-let globalSymbol = Symbol.for("name");
-let localSymbol = Symbol("name");
-
-alert( Symbol.keyFor(globalSymbol) ); // name, глобальный символ
-alert( Symbol.keyFor(localSymbol) ); // undefined для неглобального символа
-
-alert( localSymbol.description ); // name
+// то же самое с forEach:
+set.forEach((value, valueAgain, set) => {
+  alert(value);
+});
 
 /////////////////////////////////////////////////////////////////////
